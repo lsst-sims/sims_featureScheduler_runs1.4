@@ -165,7 +165,6 @@ def run_sched(surveys, survey_length=365.25, nside=32, fileroot='baseline_', ver
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.set_defaults(pairs=True)
     parser.add_argument("--verbose", dest='verbose', action='store_true')
     parser.set_defaults(verbose=False)
     parser.add_argument("--survey_length", type=float, default=365.25*10)
@@ -179,8 +178,10 @@ if __name__ == "__main__":
     max_dither = args.maxDither
 
     nside = 32
-    per_night = True
-    nexp = 1
+    per_night = True  # Dither DDF per night
+    nexp = 1  # All observations
+    mixed_pairs = True  #  For the blob scheduler
+    camera_ddf_rot_limit = 87.
 
     extra_info = {}
     exec_command = ''
@@ -193,19 +194,13 @@ if __name__ == "__main__":
     fileroot = 'testfootprint_'
     file_end = 'v1.4_'
 
-    observatory = Model_observatory(nside=nside)
-    conditions = observatory.return_conditions()
-
-    # Mark position of the sun at the start of the survey. Usefull for rolling cadence.
-    sun_ra_0 = conditions.sunRA  # radians
-    offset = create_season_offset(nside, sun_ra_0) + 365.25
     # Set up the DDF surveys to dither
     dither_detailer = detailers.Dither_detailer(per_night=per_night, max_dither=max_dither)
-    details = [detailers.Camera_rot_detailer(min_rot=-87., max_rot=87.), dither_detailer]
+    details = [detailers.Camera_rot_detailer(min_rot=-camera_ddf_rot_limit, max_rot=camera_ddf_rot_limit), dither_detailer]
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
     greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp, mixed_pairs=True, offset=offset)
+    blobs = generate_blobs(nside, nexp=nexp, mixed_pairs=mixed_pairs)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
