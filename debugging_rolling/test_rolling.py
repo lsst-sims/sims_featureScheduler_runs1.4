@@ -237,7 +237,7 @@ if __name__ == "__main__":
     extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'testrolling_'
+    fileroot = 'testrolling_'+'_mod%i_sdf_%.2f_' % (mod_year, scale_down_factor)
     file_end = 'v1.4_'
 
     observatory = Model_observatory(nside=nside)
