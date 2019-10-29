@@ -63,7 +63,7 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
         sum_footprints += np.sum(footprints[key])
 
     surveys = []
-    detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits, max_rot=np.max(camera_rot_limits)))
+    detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits), max_rot=np.max(camera_rot_limits))
 
     for filtername in filters:
         bfs = []
@@ -192,18 +192,18 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
                                                          footprint=footprints[filtername],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
-                                                         sesason_end_hour=sesason_end_hour), template_weight/2.))
+                                                         season_end_hour=sesason_end_hour), template_weight/2.))
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername2, nside=nside,
                                                          footprint=footprints[filtername2],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
-                                                         sesason_end_hour=sesason_end_hour), template_weight/2.))
+                                                         season_end_hour=sesason_end_hour), template_weight/2.))
         else:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
                                                          footprint=footprints[filtername],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
-                                                         sesason_end_hour=sesason_end_hour), template_weight))
+                                                         season_end_hour=sesason_end_hour), template_weight))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes, max_alt=max_alt,
                                                          penalty=np.nan, site='LSST'), 0.))
