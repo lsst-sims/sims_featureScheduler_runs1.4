@@ -16,14 +16,11 @@ import argparse
 
 
 def gen_greedy_surveys(nside, nexp=1, m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
-                       stayfilter_weight=3.):
+                       stayfilter_weight=3., footprints=None, season_modulo=None, day_offset=None,
+                       all_footprints_sum=None, all_rolling_sum=None, max_season=None):
     """
     Make a quick set of greedy surveys
     """
-    footprints = standard_goals(nside=nside)
-    sum_footprints = 0
-    for key in footprints:
-        sum_footprints += np.sum(footprints[key])
 
     # Let's remove the bluer filters since this should only be near twilight
     filters = ['r', 'i', 'z', 'y']
@@ -34,10 +31,13 @@ def gen_greedy_surveys(nside, nexp=1, m5_weight=3., footprint_weight=0.3, slewti
     for filtername in filters:
         bfs = []
         bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
-        bfs.append((bf.Footprint_basis_function(filtername=filtername,
-                                                footprint=footprints[filtername],
-                                                out_of_bounds_val=np.nan, nside=nside,
-                                                all_footprints_sum=sum_footprints), footprint_weight))
+        fps = [footprint[filtername] for footprint in footprints]
+        bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
+                                                        footprints=fps,
+                                                        out_of_bounds_val=np.nan, nside=nside,
+                                                        all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
+                                                        day_offset=day_offset, season_modulo=season_modulo,
+                                                        max_season=max_season), footprint_weight))
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
         # Masks, give these 0 weight
@@ -58,11 +58,10 @@ def gen_greedy_surveys(nside, nexp=1, m5_weight=3., footprint_weight=0.3, slewti
 
 def generate_blobs(nside, mixed_pairs=False, nexp=1, offset=None,
                    m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
-                   stayfilter_weight=3., template_weight=12.):
-    footprints = standard_goals(nside=nside)
-    sum_footprints = 0
-    for key in footprints:
-        sum_footprints += np.sum(footprints[key])
+                   stayfilter_weight=3., template_weight=12., footprints=None,
+                   season_modulo=None, day_offset=None,
+                   all_footprints_sum=None, all_rolling_sum=None, max_season=None):
+
     # List to hold all the surveys (for easy plotting later)
     surveys = []
 
@@ -91,33 +90,45 @@ def generate_blobs(nside, mixed_pairs=False, nexp=1, offset=None,
             bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
 
         if filtername2 is not None:
-            bfs.append((bf.Footprint_basis_function(filtername=filtername,
-                                                    footprint=footprints[filtername],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight/2.))
-            bfs.append((bf.Footprint_basis_function(filtername=filtername2,
-                                                    footprint=footprints[filtername2],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight/2.))
+            fps = [footprint[filtername] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            season_modulo=season_modulo,
+                                                            day_offset=day_offset, max_season=max_season), footprint_weight/2.))
+            fps = [footprint[filtername2] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername2,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            season_modulo=season_modulo,
+                                                            day_offset=day_offset, max_season=max_season), footprint_weight/2.))
         else:
-            bfs.append((bf.Footprint_basis_function(filtername=filtername,
-                                                    footprint=footprints[filtername],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight))
+            fps = [footprint[filtername] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            season_modulo=season_modulo,
+                                                            day_offset=day_offset, max_season=max_season), footprint_weight))
 
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
 
         if filtername2 is not None:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
-                                                         footprint=footprints[filtername],
+                                                         footprint=footprints[-1][filtername],
                                                          n_obs=3, season=300.), template_weight/2.))
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername2, nside=nside,
-                                                         footprint=footprints[filtername2],
+                                                         footprint=footprints[-1][filtername2],
                                                          n_obs=3, season=300.), template_weight/2.))
         else:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
-                                                         footprint=footprints[filtername],
+                                                         footprint=footprints[-1][filtername],
                                                          n_obs=3, season=300.), template_weight))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=60., max_alt=76.), 0.))
@@ -162,26 +173,61 @@ def run_sched(surveys, survey_length=365.25, nside=32, fileroot='baseline_', ver
                                                       verbose=verbose, extra_info=extra_info)
 
 
+def slice_wfd_area(nslice, target_map, scale_down_factor=0.2):
+    """
+    Slice the WFD area into even dec bands
+    """
+    # Make it so things still sum to one.
+    scale_up_factor = nslice - scale_down_factor*(nslice-1)
+
+    wfd = target_map['r'] * 0
+    wfd_indices = np.where(target_map['r'] == 1)[0]
+    wfd[wfd_indices] = 1
+    wfd_accum = np.cumsum(wfd)
+    split_wfd_indices = np.floor(np.max(wfd_accum)/nslice*(np.arange(nslice)+1)).astype(int)
+    split_wfd_indices = split_wfd_indices.tolist()
+    split_wfd_indices = [0] + split_wfd_indices
+
+    all_scaled_down = {}
+    for filtername in target_map:
+        all_scaled_down[filtername] = target_map[filtername]+0
+        all_scaled_down[filtername][wfd_indices] *= scale_down_factor
+
+    scaled_maps = []
+    for i in range(len(split_wfd_indices)-1):
+        new_map = {}
+        indices = wfd_indices[split_wfd_indices[i]:split_wfd_indices[i+1]]
+        for filtername in all_scaled_down:
+            new_map[filtername] = all_scaled_down[filtername] + 0
+            new_map[filtername][indices] = target_map[filtername][indices]*scale_up_factor
+        scaled_maps.append(new_map)
+
+    return scaled_maps
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
+    parser.set_defaults(pairs=True)
     parser.add_argument("--verbose", dest='verbose', action='store_true')
     parser.set_defaults(verbose=False)
     parser.add_argument("--survey_length", type=float, default=365.25*10)
     parser.add_argument("--outDir", type=str, default="")
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
+    parser.add_argument("--splits", type=int, default=2)
+    parser.add_argument("--scale_down_factor", type=float, default=0.2)
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
     outDir = args.outDir
     verbose = args.verbose
     max_dither = args.maxDither
+    mod_year = args.splits
+    scale_down_factor = args.scale_down_factor
 
     nside = 32
-    per_night = True  # Dither DDF per night
-    nexp = 1  # All observations
-    mixed_pairs = True  # For the blob scheduler
-    camera_ddf_rot_limit = 87.
+    per_night = True
+    nexp = 1
 
     extra_info = {}
     exec_command = ''
@@ -191,17 +237,40 @@ if __name__ == "__main__":
     extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'baseline_'
+    fileroot = 'testrolling_'+'_mod%i_sdf_%.2f_noddf_' % (mod_year, scale_down_factor)
     file_end = 'v1.4_'
 
+    observatory = Model_observatory(nside=nside)
+    conditions = observatory.return_conditions()
+
+    # Mark position of the sun at the start of the survey. Usefull for rolling cadence.
+    sun_ra_0 = conditions.sunRA  # radians
+    #offset = create_season_offset(nside, sun_ra_0) + 365.25
+    offset = np.zeros(hp.nside2npix(nside))
     # Set up the DDF surveys to dither
     dither_detailer = detailers.Dither_detailer(per_night=per_night, max_dither=max_dither)
-    details = [detailers.Camera_rot_detailer(min_rot=-camera_ddf_rot_limit, max_rot=camera_ddf_rot_limit), dither_detailer]
+    details = [detailers.Camera_rot_detailer(min_rot=-87., max_rot=87.), dither_detailer]
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
-    greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp, mixed_pairs=mixed_pairs)
-    surveys = [ddfs, blobs, greedy]
+    sg = standard_goals()
+    roll_maps = slice_wfd_area(mod_year, sg, scale_down_factor=scale_down_factor)
+    footprints = roll_maps + [sg]
+
+    all_footprints_sum = 0
+    all_rolling_sum = 0
+
+    wfd_indx = np.where(sg['r'] == 1)
+    for fp in sg:
+        all_footprints_sum += np.sum(sg[fp])
+        all_rolling_sum += np.sum(sg[fp][wfd_indx])
+
+    greedy = gen_greedy_surveys(nside, nexp=nexp, footprints=footprints, season_modulo=mod_year,
+                                all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
+                                day_offset=offset, max_season=None)
+    blobs = generate_blobs(nside, nexp=nexp, mixed_pairs=True, footprints=footprints, season_modulo=mod_year,
+                           all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
+                           day_offset=offset, max_season=None)
+    surveys = [blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
               nside=nside)
