@@ -15,21 +15,55 @@ import os
 import argparse
 
 
-def gen_greedy_surveys(nside, nexp=1, m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
+def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y'],
+                       camera_rot_limits=[-87., 87.],
+                       shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
+                       m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
                        stayfilter_weight=3.):
     """
     Make a quick set of greedy surveys
+
+    This is a convienence function to generate a list of survey objects that can be used with
+    lsst.sims.featureScheduler.schedulers.Core_scheduler.
+    To ensure we are robust against changes in the sims_featureScheduler codebase, all kwargs are
+    explicitly set.
+
+    Parameters
+    ----------
+    nside : int (32)
+        The HEALpix nside to use
+    nexp : int (1)
+        The number of exposures to use in a visit.
+    exptime : float (30.)
+        The exposure time to use per visit (seconds)
+    filters : list of str (['r', 'i', 'z', 'y'])
+        Which filters to generate surveys for.
+    camera_rot_limits : list of float ([-87., 87.])
+        The limits to impose when rotationally dithering the camera (degrees).
+    shadow_minutes : float (60.)
+        Used to mask regions around zenith (minutes)
+    max_alt : float (76.
+        The maximium altitude to use when masking zenith (degrees)
+    moon_distance : float (30.)
+        The mask radius to apply around the moon (degrees)
+    ignore_obs : str or list of str ('DD')
+        Ignore observations by surveys that include the given substring(s).
+    m5_weight : float (3.)
+        The weight for the 5-sigma depth difference basis function
+    footprint_weight : float (0.3)
+        The weight on the survey footprint basis function.
+    slewtime_weight : float (3.)
+        The weight on the slewtime basis function
+    stayfilter_weight : float (3.)
+        The weight on basis function that tries to stay avoid filter changes.
     """
     footprints = standard_goals(nside=nside)
     sum_footprints = 0
     for key in footprints:
         sum_footprints += np.sum(footprints[key])
 
-    # Let's remove the bluer filters since this should only be near twilight
-    filters = ['r', 'i', 'z', 'y']
     surveys = []
-
-    detailer = detailers.Camera_rot_detailer(min_rot=-87., max_rot=87.)
+    detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits, max_rot=np.max(camera_rot_limits)))
 
     for filtername in filters:
         bfs = []
@@ -41,44 +75,89 @@ def gen_greedy_surveys(nside, nexp=1, m5_weight=3., footprint_weight=0.3, slewti
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
         # Masks, give these 0 weight
-        bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=60., max_alt=76.), 0))
-        bfs.append((bf.Moon_avoidance_basis_function(nside=nside, moon_distance=30.), 0))
+        bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes,
+                                                         max_alt=max_alt), 0))
+        bfs.append((bf.Moon_avoidance_basis_function(nside=nside, moon_distance=moon_distance), 0))
 
         bfs.append((bf.Filter_loaded_basis_function(filternames=filtername), 0))
         bfs.append((bf.Planet_mask_basis_function(nside=nside), 0))
 
         weights = [val[1] for val in bfs]
         basis_functions = [val[0] for val in bfs]
-        surveys.append(Greedy_survey(basis_functions, weights, block_size=1, filtername=filtername,
-                                     dither=True, nside=nside, ignore_obs='DD', nexp=nexp,
+        surveys.append(Greedy_survey(basis_functions, weights, block_size=1, smoothing_kernel=None,
+                                     seed=42, exptime=exptime, camera='LSST', filtername=filtername,
+                                     dither=True, nside=nside, ignore_obs=ignore_obs, nexp=nexp,
                                      detailers=[detailer], survey_name='greedy'))
 
     return surveys
 
 
-def generate_blobs(nside, mixed_pairs=False, nexp=1, offset=None,
+def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z', 'y'],
+                   filter2s=[None, 'r', 'i', 'z', None, None], pair_time=22.,
+                   camera_rot_limits=[-87., 87.], n_obs_template=3,
+                   season=300., season_start_hour=-4., sesason_end_hour=2.,
+                   shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                    m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
                    stayfilter_weight=3., template_weight=12.):
+    """
+    Generate surveys that take observations in blobs.
+
+    Parameters
+    ----------
+    nside : int (32)
+        The HEALpix nside to use
+    nexp : int (1)
+        The number of exposures to use in a visit.
+    exptime : float (30.)
+        The exposure time to use per visit (seconds)
+    filter1s : list of str
+        The filternames for the first set
+    filter2s : list of str
+        The filter names for the second in the pair (None if unpaired)
+    pair_time : float (22)
+        The ideal time between pairs (minutes)
+    camera_rot_limits : list of float ([-87., 87.])
+        The limits to impose when rotationally dithering the camera (degrees).
+    n_obs_template : int (3)
+        The number of observations to take every season in each filter
+    season : float (300)
+        The length of season (i.e., how long before templates expire) (days)
+    season_start_hour : float (-4.)
+        For weighting how strongly a template image needs to be observed (hours)
+    sesason_end_hour : float (2.)
+        For weighting how strongly a template image needs to be observed (hours)
+    shadow_minutes : float (60.)
+        Used to mask regions around zenith (minutes)
+    max_alt : float (76.
+        The maximium altitude to use when masking zenith (degrees)
+    moon_distance : float (30.)
+        The mask radius to apply around the moon (degrees)
+    ignore_obs : str or list of str ('DD')
+        Ignore observations by surveys that include the given substring(s).
+    m5_weight : float (3.)
+        The weight for the 5-sigma depth difference basis function
+    footprint_weight : float (0.3)
+        The weight on the survey footprint basis function.
+    slewtime_weight : float (3.)
+        The weight on the slewtime basis function
+    stayfilter_weight : float (3.)
+        The weight on basis function that tries to stay avoid filter changes.
+    template_weight : float (12.)
+        The weight to place on getting image templates every season
+    """
+
     footprints = standard_goals(nside=nside)
     sum_footprints = 0
     for key in footprints:
         sum_footprints += np.sum(footprints[key])
-    # List to hold all the surveys (for easy plotting later)
+
     surveys = []
 
-    # Set up observations to be taken in blocks
-    filter1s = ['u', 'g', 'r', 'i', 'z', 'y']
-    if mixed_pairs:
-        filter2s = [None, 'r', 'i', 'z', None, None]
-    else:
-        filter2s = [None, 'g', 'r', 'i', None, None]
-
-    # Ideal time between taking pairs
-    pair_time = 22.
     times_needed = [pair_time, pair_time*2]
     for filtername, filtername2 in zip(filter1s, filter2s):
         detailer_list = []
-        detailer_list.append(detailers.Camera_rot_detailer(min_rot=-87., max_rot=87.))
+        detailer_list.append(detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits),
+                                                           max_rot=np.max(camera_rot_limits)))
         detailer_list.append(detailers.Close_alt_detailer())
         # List to hold tuples of (basis_function_object, weight)
         bfs = []
@@ -111,17 +190,24 @@ def generate_blobs(nside, mixed_pairs=False, nexp=1, offset=None,
         if filtername2 is not None:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
                                                          footprint=footprints[filtername],
-                                                         n_obs=3, season=300.), template_weight/2.))
+                                                         n_obs=n_obs_template, season=season,
+                                                         season_start_hour=season_start_hour,
+                                                         sesason_end_hour=sesason_end_hour), template_weight/2.))
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername2, nside=nside,
                                                          footprint=footprints[filtername2],
-                                                         n_obs=3, season=300.), template_weight/2.))
+                                                         n_obs=n_obs_template, season=season,
+                                                         season_start_hour=season_start_hour,
+                                                         sesason_end_hour=sesason_end_hour), template_weight/2.))
         else:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
                                                          footprint=footprints[filtername],
-                                                         n_obs=3, season=300.), template_weight))
+                                                         n_obs=n_obs_template, season=season,
+                                                         season_start_hour=season_start_hour,
+                                                         sesason_end_hour=sesason_end_hour), template_weight))
         # Masks, give these 0 weight
-        bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=60., max_alt=76.), 0.))
-        bfs.append((bf.Moon_avoidance_basis_function(nside=nside, moon_distance=30.), 0.))
+        bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes, max_alt=max_alt,
+                                                         penalty=np.nan, site='LSST'), 0.))
+        bfs.append((bf.Moon_avoidance_basis_function(nside=nside, moon_distance=moon_distance), 0.))
         filternames = [fn for fn in [filtername, filtername2] if fn is not None]
         bfs.append((bf.Filter_loaded_basis_function(filternames=filternames), 0))
         if filtername2 is None:
@@ -142,8 +228,13 @@ def generate_blobs(nside, mixed_pairs=False, nexp=1, offset=None,
         if filtername2 is not None:
             detailer_list.append(detailers.Take_as_pairs_detailer(filtername=filtername2))
         surveys.append(Blob_survey(basis_functions, weights, filtername1=filtername, filtername2=filtername2,
-                                   ideal_pair_time=pair_time, nside=nside,
-                                   survey_note=survey_name, ignore_obs='DD', dither=True,
+                                   slew_approx=7.5, filter_change_approx=140.,
+                                   read_approx=2., exptime=exptime,
+                                   ideal_pair_time=pair_time,
+                                   min_pair_time=15., search_radius=30., alt_max=85., az_range=90.,
+                                   flush_time=30., smoothing_kernel=None, nside=nside, seed=42,
+                                   survey_note=survey_name, ignore_obs=ignore_obs, dither=True,
+                                   twilight_scale=True,
                                    nexp=nexp, detailers=detailer_list))
 
     return surveys
@@ -200,7 +291,7 @@ if __name__ == "__main__":
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
     greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp, mixed_pairs=mixed_pairs)
+    blobs = generate_blobs(nside, nexp=nexp)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
