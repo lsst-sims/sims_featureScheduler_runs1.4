@@ -57,6 +57,12 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
     stayfilter_weight : float (3.)
         The weight on basis function that tries to stay avoid filter changes.
     """
+    # Define the extra parameters that are used in the greedy survey. I
+    # think these are fairly set, so no need to promote to utility func kwargs
+    greed_survey_params = {'block_size': 1, 'smoothing_kernel': None,
+                           'seed': 42, 'camera': 'LSST', 'dither': True,
+                           'survey_name': 'greedy'}
+
     footprints = standard_goals(nside=nside)
     sum_footprints = 0
     for key in footprints:
@@ -84,10 +90,9 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
 
         weights = [val[1] for val in bfs]
         basis_functions = [val[0] for val in bfs]
-        surveys.append(Greedy_survey(basis_functions, weights, block_size=1, smoothing_kernel=None,
-                                     seed=42, exptime=exptime, camera='LSST', filtername=filtername,
-                                     dither=True, nside=nside, ignore_obs=ignore_obs, nexp=nexp,
-                                     detailers=[detailer], survey_name='greedy'))
+        surveys.append(Greedy_survey(basis_functions, weights, exptime=exptime, filtername=filtername,
+                                     nside=nside, ignore_obs=ignore_obs, nexp=nexp,
+                                     detailers=[detailer], **greed_survey_params))
 
     return surveys
 
@@ -145,6 +150,12 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
     template_weight : float (12.)
         The weight to place on getting image templates every season
     """
+
+    blob_survey_params = {'slew_approx': 7.5, 'filter_change_approx': 140.,
+                          'read_approx': 2., 'min_pair_time': 15., 'search_radius': 30.,
+                          'alt_max': 85., 'az_range': 90., 'flush_time': 30.,
+                          'smoothing_kernel': None, 'nside': nside, 'seed': 42, 'dither': True,
+                          'twilight_scale': True}
 
     footprints = standard_goals(nside=nside)
     sum_footprints = 0
@@ -228,14 +239,10 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
         if filtername2 is not None:
             detailer_list.append(detailers.Take_as_pairs_detailer(filtername=filtername2))
         surveys.append(Blob_survey(basis_functions, weights, filtername1=filtername, filtername2=filtername2,
-                                   slew_approx=7.5, filter_change_approx=140.,
-                                   read_approx=2., exptime=exptime,
+                                   exptime=exptime,
                                    ideal_pair_time=pair_time,
-                                   min_pair_time=15., search_radius=30., alt_max=85., az_range=90.,
-                                   flush_time=30., smoothing_kernel=None, nside=nside, seed=42,
-                                   survey_note=survey_name, ignore_obs=ignore_obs, dither=True,
-                                   twilight_scale=True,
-                                   nexp=nexp, detailers=detailer_list))
+                                   survey_note=survey_name, ignore_obs=ignore_obs,
+                                   nexp=nexp, detailers=detailer_list, **blob_survey_params))
 
     return surveys
 
