@@ -2,7 +2,7 @@
 
 ## Job Name
 
-#SBATCH --job-name=baselines
+#SBATCH --job-name=weather
 
 ## Allocation Definition
 
@@ -53,4 +53,4 @@ cd /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/slurm
 ## run all the baseline commands in parallel
 module load parallel-20170722
 ## only need to do 5 at a time, since there are only that many in the list
-cat run_baselines.script | parallel -j 20
+cat run_weather.script | parallel -j 20
