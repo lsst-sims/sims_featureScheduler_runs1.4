@@ -1,0 +1,5 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 5 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
