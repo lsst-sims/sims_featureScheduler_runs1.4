@@ -286,7 +286,11 @@ if __name__ == "__main__":
     for arg in sys.argv:
         exec_command += ' ' + arg
     extra_info['exec command'] = exec_command
-    extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
+    try:
+        extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
+    except subprocess.CalledProcessError:
+        extra_info['git hash'] = 'Not in git repo'
+
     extra_info['file executed'] = os.path.realpath(__file__)
 
     fileroot = 'baseline_'
