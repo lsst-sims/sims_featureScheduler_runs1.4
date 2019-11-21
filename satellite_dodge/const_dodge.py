@@ -252,7 +252,7 @@ def run_sched(surveys, survey_length=365.25, nside=32, fileroot='baseline_', ver
     years = np.round(survey_length/365.25)
     scheduler = Core_scheduler(surveys, nside=nside)
     n_visit_limit = None
-    observatory = Model_observatory(nside=nside, satellites='Starlink')
+    observatory = Model_observatory(nside=nside, satellites='Starlink', alt_min=30.)
     observatory, scheduler, observations = sim_runner(observatory, scheduler,
                                                       survey_length=survey_length,
                                                       filename=fileroot+'%iyrs.db' % years,
