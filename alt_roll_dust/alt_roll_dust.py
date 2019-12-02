@@ -139,7 +139,9 @@ def slice_wfd_area_quad(target_map, scale_down_factor=0.2):
     return scaled_maps
 
 
-def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y'],
+def gen_greedy_surveys(nside=32, season_modulo=None, day_offset=None, max_season=10,
+                       footprints=None, all_footprints_sum=None, all_rolling_sum=None,
+                       nexp=1, exptime=30., filters=['r', 'i', 'z', 'y'],
                        camera_rot_limits=[-87., 87.],
                        shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                        m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
@@ -187,25 +189,21 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
                            'seed': 42, 'camera': 'LSST', 'dither': True,
                            'survey_name': 'greedy'}
 
-    footprints = big_sky_dust(nside=nside)
-    sum_footprints = 0
-    for key in footprints:
-        sum_footprints += np.sum(footprints[key])
-    wfd_halves = wfd_half()
-
     surveys = []
     detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits), max_rot=np.max(camera_rot_limits))
 
     for filtername in filters:
         bfs = []
         bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
+        fps = [footprint[filtername] for footprint in footprints]
         bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
-                                                        footprint=footprints[filtername],
+                                                        footprints=fps,
                                                         out_of_bounds_val=np.nan, nside=nside,
-                                                        all_footprints_sum=sum_footprints), footprint_weight))
+                                                        all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
+                                                        day_offset=day_offset, season_modulo=season_modulo,
+                                                        max_season=max_season), footprint_weight))
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
-        bfs.append(bf.Map_modulo_basis_function(wfd_halves))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes,
                                                          max_alt=max_alt), 0))
@@ -223,7 +221,9 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
     return surveys
 
 
-def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z', 'y'],
+def generate_blobs(nside, nexp=1, season_modulo=None, day_offset=None, max_season=10,
+                   footprints=None, all_footprints_sum=None, all_rolling_sum=None,
+                   exptime=30., filter1s=['u', 'g', 'r', 'i', 'z', 'y'],
                    filter2s=[None, 'r', 'i', 'z', None, None], pair_time=22.,
                    camera_rot_limits=[-87., 87.], n_obs_template=3,
                    season=300., season_start_hour=-4., season_end_hour=2.,
@@ -283,11 +283,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
                           'smoothing_kernel': None, 'nside': nside, 'seed': 42, 'dither': True,
                           'twilight_scale': True}
 
-    footprints = standard_goals(nside=nside)
-    sum_footprints = 0
-    for key in footprints:
-        sum_footprints += np.sum(footprints[key])
-
     surveys = []
 
     times_needed = [pair_time, pair_time*2]
@@ -307,37 +302,49 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
             bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
 
         if filtername2 is not None:
-            bfs.append((bf.Footprint_basis_function(filtername=filtername,
-                                                    footprint=footprints[filtername],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight/2.))
-            bfs.append((bf.Footprint_basis_function(filtername=filtername2,
-                                                    footprint=footprints[filtername2],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight/2.))
+            fps = [footprint[filtername] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            day_offset=day_offset, season_modulo=season_modulo,
+                                                            max_season=max_season), footprint_weight/2.))
+            fps = [footprint[filtername2] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername2,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            day_offset=day_offset, season_modulo=season_modulo,
+                                                            max_season=max_season), footprint_weight/2.))
         else:
-            bfs.append((bf.Footprint_basis_function(filtername=filtername,
-                                                    footprint=footprints[filtername],
-                                                    out_of_bounds_val=np.nan, nside=nside,
-                                                    all_footprints_sum=sum_footprints), footprint_weight))
+            fps = [footprint[filtername] for footprint in footprints]
+            bfs.append((bf.Footprint_rolling_basis_function(filtername=filtername,
+                                                            footprints=fps,
+                                                            out_of_bounds_val=np.nan, nside=nside,
+                                                            all_footprints_sum=all_footprints_sum,
+                                                            all_rolling_sum=all_rolling_sum,
+                                                            season_modulo=season_modulo,
+                                                            day_offset=day_offset, max_season=max_season), footprint_weight))
 
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
 
         if filtername2 is not None:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
-                                                         footprint=footprints[filtername],
+                                                         footprint=footprints[-1][filtername],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
                                                          season_end_hour=season_end_hour), template_weight/2.))
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername2, nside=nside,
-                                                         footprint=footprints[filtername2],
+                                                         footprint=footprints[-1][filtername2],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
                                                          season_end_hour=season_end_hour), template_weight/2.))
         else:
             bfs.append((bf.N_obs_per_year_basis_function(filtername=filtername, nside=nside,
-                                                         footprint=footprints[filtername],
+                                                         footprint=footprints[-1][filtername],
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
                                                          season_end_hour=season_end_hour), template_weight))
@@ -441,12 +448,21 @@ if __name__ == "__main__":
     # Set up rolling maps
     sg = big_sky_dust()
     roll_maps = slice_wfd_area_quad(sg, scale_down_factor=scale_down_factor)
-    target_maps = roll_maps + [sg]
+    footprints = roll_maps + [sg]
 
-    greedy = gen_greedy_surveys(nside, nexp=nexp, target_maps=target_maps, mod_year=mod_year, day_offset=offset,
-                                max_season=max_season)
-    blobs = generate_blobs(nside, nexp=nexp, offset=offset, target_maps=target_maps,
-                           mod_year=mod_year, max_season=max_season, day_offset=offset)
+    all_footprints_sum = 0
+    all_rolling_sum = 0
+
+    wfd_indx = np.where(sg['r'] == 1)
+    for fp in sg:
+        all_footprints_sum += np.sum(sg[fp])
+        all_rolling_sum += np.sum(sg[fp][wfd_indx])
+
+    greedy = gen_greedy_surveys(nside, nexp=nexp, season_modulo=mod_year, day_offset=offset, footprints=footprints,
+                                max_season=max_season, all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum)
+    blobs = generate_blobs(nside, nexp=nexp, footprints=footprints,
+                           season_modulo=mod_year, max_season=max_season, day_offset=offset,
+                           all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
