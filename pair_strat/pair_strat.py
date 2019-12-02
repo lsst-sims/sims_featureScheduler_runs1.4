@@ -16,7 +16,7 @@ import argparse
 
 
 def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y'],
-                       camera_rot_limits=[-87., 87.],
+                       camera_rot_limits=[-80., 80.],
                        shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                        m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
                        stayfilter_weight=3.):
@@ -38,7 +38,7 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
         The exposure time to use per visit (seconds)
     filters : list of str (['r', 'i', 'z', 'y'])
         Which filters to generate surveys for.
-    camera_rot_limits : list of float ([-87., 87.])
+    camera_rot_limits : list of float ([-80., 80.])
         The limits to impose when rotationally dithering the camera (degrees).
     shadow_minutes : float (60.)
         Used to mask regions around zenith (minutes)
@@ -99,7 +99,7 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
 
 def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z', 'y'],
                    filter2s=[None, 'r', 'i', 'z', None, None], pair_time=22.,
-                   camera_rot_limits=[-87., 87.], n_obs_template=3,
+                   camera_rot_limits=[-80., 80.], n_obs_template=3,
                    season=300., season_start_hour=-4., season_end_hour=2.,
                    shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                    m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
@@ -121,7 +121,7 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
         The filter names for the second in the pair (None if unpaired)
     pair_time : float (22)
         The ideal time between pairs (minutes)
-    camera_rot_limits : list of float ([-87., 87.])
+    camera_rot_limits : list of float ([-80., 80.])
         The limits to impose when rotationally dithering the camera (degrees).
     n_obs_template : int (3)
         The number of observations to take every season in each filter
@@ -293,7 +293,7 @@ if __name__ == "__main__":
     per_night = True  # Dither DDF per night
     nexp = 1  # All observations
     mixed_pairs = True  # For the blob scheduler
-    camera_ddf_rot_limit = 87.
+    camera_ddf_rot_limit = 80.
 
     extra_info = {}
     exec_command = ''
