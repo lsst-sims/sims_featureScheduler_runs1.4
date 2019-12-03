@@ -145,7 +145,7 @@ def gen_greedy_surveys(nside=32, season_modulo=None, day_offset=None, max_season
                        camera_rot_limits=[-80., 80.],
                        shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                        m5_weight=3., footprint_weight=0.3, slewtime_weight=3.,
-                       stayfilter_weight=3., roll_weight=3.):
+                       stayfilter_weight=3.):
     """
     Make a quick set of greedy surveys
 
@@ -191,7 +191,7 @@ def gen_greedy_surveys(nside=32, season_modulo=None, day_offset=None, max_season
 
     surveys = []
     detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits), max_rot=np.max(camera_rot_limits))
-    wfd_halves = wfd_half()
+
     for filtername in filters:
         bfs = []
         bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
@@ -204,7 +204,6 @@ def gen_greedy_surveys(nside=32, season_modulo=None, day_offset=None, max_season
                                                         max_season=max_season), footprint_weight))
         bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
-        bfs.append((bf.Map_modulo_basis_function(wfd_halves), roll_weight))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes,
                                                          max_alt=max_alt), 0))
@@ -230,7 +229,7 @@ def generate_blobs(nside, nexp=1, season_modulo=None, day_offset=None, max_seaso
                    season=300., season_start_hour=-4., season_end_hour=2.,
                    shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                    m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
-                   stayfilter_weight=3., template_weight=12., roll_weight=3.):
+                   stayfilter_weight=3., template_weight=12.):
     """
     Generate surveys that take observations in blobs.
 
@@ -285,7 +284,7 @@ def generate_blobs(nside, nexp=1, season_modulo=None, day_offset=None, max_seaso
                           'twilight_scale': True}
 
     surveys = []
-    wfd_halves = wfd_half()
+
     times_needed = [pair_time, pair_time*2]
     for filtername, filtername2 in zip(filter1s, filter2s):
         detailer_list = []
@@ -349,7 +348,6 @@ def generate_blobs(nside, nexp=1, season_modulo=None, day_offset=None, max_seaso
                                                          n_obs=n_obs_template, season=season,
                                                          season_start_hour=season_start_hour,
                                                          season_end_hour=season_end_hour), template_weight))
-        bfs.append((bf.Map_modulo_basis_function(wfd_halves), roll_weight))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes, max_alt=max_alt,
                                                          penalty=np.nan, site='LSST'), 0.))
@@ -432,7 +430,7 @@ if __name__ == "__main__":
 
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'alt_roll_mod%i_dust_sdf_%.2f_' % (mod_year, scale_down_factor)
+    fileroot = 'roll_mod%i_dust_sdf_%.2f_' % (mod_year, scale_down_factor)
     file_end = 'v1.4_'
 
     # Mark position of the sun at the start of the survey. Usefull for rolling cadence.
