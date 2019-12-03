@@ -1,0 +1,11 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name standard_goals --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name bluer_footprint --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name gp_smooth --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name no_gp_north --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name add_mag_clouds --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name big_sky --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name big_sky_nouiy --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name big_sky_dust --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name newA --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name newB --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name stuck_rolling --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints

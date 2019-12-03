@@ -4,7 +4,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 import lsst.sims.featureScheduler.utils as utils
 from lsst.sims.featureScheduler.utils import generate_goal_map
-from lsst.sims.featureScheduler.utils import standard_goals, calc_norm_factor
+from lsst.sims.featureScheduler.utils import standard_goals
 
 # OK, what are the footprints we'd like to try?
 

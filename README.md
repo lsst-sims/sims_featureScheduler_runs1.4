@@ -1,14 +1,25 @@
 # sims_featureScheduler_runs1.4
 The continuing excitement of more simulated LSST schedulers
 
+Updated things in this release:
+
+* A more realistic database of the expected seeing conditions. This mean the median atmospheric seeing is increased from ~0.6" to 0.7". Seasonal seeing variation should be more realistic as well
+* We restrict the camera rotation slightly more to prevent tracking beyond rotator limits
+
+
+
 
 ## Note--these runs are still under development and subject to change. We will announce on https://community.lsst.org/c/sci when they are officially released.
+
+
+
 
 
 
 ## baseline
 
 The baseline experiment. XXX--maybe a brief description of relevant points
+
 
 ## pair_strat
 
