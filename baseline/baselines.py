@@ -279,7 +279,7 @@ if __name__ == "__main__":
     per_night = True  # Dither DDF per night
     nexp = 1  # All observations
     mixed_pairs = True  # For the blob scheduler
-    camera_ddf_rot_limit = 80.
+    camera_ddf_rot_limit = 45.
 
     extra_info = {}
     exec_command = ''
