@@ -1,3 +1,5 @@
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 0 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
