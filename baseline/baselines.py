@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 import healpy as hp
 from lsst.sims.featureScheduler.modelObservatory import Model_observatory
-from lsst.sims.featureScheduler.schedulers import Core_scheduler
+from lsst.sims.featureScheduler.schedulers import Core_scheduler, simple_filter_sched
 from lsst.sims.featureScheduler.utils import standard_goals, create_season_offset
 import lsst.sims.featureScheduler.basis_functions as bf
 from lsst.sims.featureScheduler.surveys import (generate_dd_surveys, Greedy_survey,
@@ -248,16 +248,18 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
 
 
 def run_sched(surveys, survey_length=365.25, nside=32, fileroot='baseline_', verbose=False,
-              extra_info=None):
+              extra_info=None, illum_limit=10.):
     years = np.round(survey_length/365.25)
     scheduler = Core_scheduler(surveys, nside=nside)
     n_visit_limit = None
+    filter_sched = simple_filter_sched(illum_limit=illum_limit)
     observatory = Model_observatory(nside=nside)
     observatory, scheduler, observations = sim_runner(observatory, scheduler,
                                                       survey_length=survey_length,
                                                       filename=fileroot+'%iyrs.db' % years,
                                                       delete_past=True, n_visit_limit=n_visit_limit,
-                                                      verbose=verbose, extra_info=extra_info)
+                                                      verbose=verbose, extra_info=extra_info,
+                                                      filter_scheduler=filter_sched)
 
 
 if __name__ == "__main__":
@@ -268,12 +270,14 @@ if __name__ == "__main__":
     parser.add_argument("--survey_length", type=float, default=365.25*10)
     parser.add_argument("--outDir", type=str, default="")
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
+    parser.add_argument("--moon_illum_limit", type=float, default=10., help="illumination limit to remove u-band")
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
     outDir = args.outDir
     verbose = args.verbose
     max_dither = args.maxDither
+    illum_limit = args.moon_illum_limit
 
     nside = 32
     per_night = True  # Dither DDF per night
@@ -306,4 +310,4 @@ if __name__ == "__main__":
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
-              nside=nside)
+              nside=nside, illum_limit=illum_limit)

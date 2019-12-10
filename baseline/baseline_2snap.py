@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 import healpy as hp
 from lsst.sims.featureScheduler.modelObservatory import Model_observatory
-from lsst.sims.featureScheduler.schedulers import Core_scheduler
+from lsst.sims.featureScheduler.schedulers import Core_scheduler, simple_filter_sched
 from lsst.sims.featureScheduler.utils import standard_goals, create_season_offset
 import lsst.sims.featureScheduler.basis_functions as bf
 from lsst.sims.featureScheduler.surveys import (generate_dd_surveys, Greedy_survey,
@@ -165,11 +165,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
     surveys = []
 
     times_needed = [pair_time, pair_time*2]
-
-    # decide if we need to add a modulo on things
-    night_mod = False
-    if (filter1s[0] == 'u') & (filter1s[1] == 'u'):
-        night_mod = True
     for filtername, filtername2 in zip(filter1s, filter2s):
         detailer_list = []
         detailer_list.append(detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits),
@@ -234,13 +229,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
         bfs.append((bf.Not_twilight_basis_function(), 0.))
         bfs.append((bf.Planet_mask_basis_function(nside=nside), 0.))
 
-        # If we are doing different u-pair strategies
-        if night_mod:
-            if (filtername == 'u') & (filtername2 == 'u'):
-                bfs.append((bf.Night_modulo_basis_function(pattern=[True, False]), 0))
-            if (filtername == 'u') & (filtername2 == 'g'):
-                bfs.append((bf.Night_modulo_basis_function(pattern=[False, True]), 0))
-
         # unpack the basis functions and weights
         weights = [val[1] for val in bfs]
         basis_functions = [val[0] for val in bfs]
@@ -260,16 +248,18 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z'
 
 
 def run_sched(surveys, survey_length=365.25, nside=32, fileroot='baseline_', verbose=False,
-              extra_info=None):
+              extra_info=None, illum_limit=10.):
     years = np.round(survey_length/365.25)
     scheduler = Core_scheduler(surveys, nside=nside)
     n_visit_limit = None
+    filter_sched = simple_filter_sched(illum_limit=illum_limit)
     observatory = Model_observatory(nside=nside)
     observatory, scheduler, observations = sim_runner(observatory, scheduler,
                                                       survey_length=survey_length,
                                                       filename=fileroot+'%iyrs.db' % years,
                                                       delete_past=True, n_visit_limit=n_visit_limit,
-                                                      verbose=verbose, extra_info=extra_info)
+                                                      verbose=verbose, extra_info=extra_info,
+                                                      filter_scheduler=filter_sched)
 
 
 if __name__ == "__main__":
@@ -280,49 +270,44 @@ if __name__ == "__main__":
     parser.add_argument("--survey_length", type=float, default=365.25*10)
     parser.add_argument("--outDir", type=str, default="")
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
-    parser.add_argument("--pair_strat", type=int, default=0)
+    parser.add_argument("--moon_illum_limit", type=float, default=10., help="illumination limit to remove u-band")
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
     outDir = args.outDir
     verbose = args.verbose
     max_dither = args.maxDither
-    pair_strat = args.pair_strat
+    illum_limit = args.moon_illum_limit
 
     nside = 32
     per_night = True  # Dither DDF per night
-    nexp = 1  # All observations
+    nexp = 2  # All observations
     mixed_pairs = True  # For the blob scheduler
-    camera_ddf_rot_limit = 80.
+    camera_ddf_rot_limit = 75.
 
     extra_info = {}
     exec_command = ''
     for arg in sys.argv:
         exec_command += ' ' + arg
     extra_info['exec command'] = exec_command
-    extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
+    try:
+        extra_info['git hash'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
+    except subprocess.CalledProcessError:
+        extra_info['git hash'] = 'Not in git repo'
+
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'pair_strategy_%i_' % pair_strat
+    fileroot = 'baseline_2snaps'
     file_end = 'v1.4_'
 
-    # Lets define some pair strategies
-    pair_strats = {0: [['u', 'g', 'r', 'i', 'z', 'y'], [None, 'r', 'i', 'z', None, None]],  # baseline
-                   1: [['u', 'g', 'r', 'i', 'z', 'y'], ['u', 'r', 'i', 'z', 'y', None]],  # do u+u and z+y
-                   2: [['u', 'u', 'g', 'r', 'i', 'z', 'y'], ['u', 'g', 'r', 'i', 'z', None, None]],  # u+u and u+g
-                   3: [['u', 'u', 'u', 'g', 'r', 'i', 'z', 'y'], ['u', 'g', 'r', 'r', 'i', 'z', None, None]],  # u+u, u+g, u+r
-                   4: [['u', 'g', 'r', 'i', 'z', 'y'], ['u', 'r', 'i', 'z', 'y', 'y']]}  # u+u, z+y, y+y
-
-    filter1s = pair_strats[pair_strat][0]
-    filter2s = pair_strats[pair_strat][1]
     # Set up the DDF surveys to dither
     dither_detailer = detailers.Dither_detailer(per_night=per_night, max_dither=max_dither)
     details = [detailers.Camera_rot_detailer(min_rot=-camera_ddf_rot_limit, max_rot=camera_ddf_rot_limit), dither_detailer]
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
     greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp, filter1s=filter1s, filter2s=filter2s)
+    blobs = generate_blobs(nside, nexp=nexp)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
-              nside=nside)
+              nside=nside, illum_limit=illum_limit)
