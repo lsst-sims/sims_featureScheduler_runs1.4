@@ -1,12 +1,10 @@
 # sims_featureScheduler_runs1.4
-The continuing excitement of more simulated LSST schedulers
+The continuing excitement of more simulated LSST surveys
 
 Updated things in this release:
 
 * A more realistic database of the expected seeing conditions. This mean the median atmospheric seeing is increased from ~0.6" to 0.7". Seasonal seeing variation should be more realistic as well
-* We restrict the camera rotation slightly more to prevent tracking beyond rotator limits
-
-
+* We restrict the camera rotation to prevent tracking beyond rotator limits
 
 
 ## Note--these runs are still under development and subject to change. We will announce on https://community.lsst.org/c/sci when they are officially released.
@@ -14,7 +12,9 @@ Updated things in this release:
 
 
 
+## alt_roll_dust
 
+Simulations using a footprint that masks out high extinction regions. The sims use a rolling cadence that emphasizes half the sky, as well we a version that alternates observing north and south each day.
 
 ## baseline
 
@@ -27,7 +27,7 @@ We experiment with different strategies of how we take observations in pairs. In
 
 ## satellite_dodge
 
-There is the potential that LSST will want to avoid large satellite constellations. In this experiment, we randomly assign ~15% of observations as potentially including a satellite and pre-preemptively drop them from the observing queue. This is a test to see the impact of implamenting a simple satellite mitigation strategy.
+There is the potential that LSST will want to avoid large satellite constellations. In this experiment, we randomly assign ~15% of observations as potentially including a satellite and preemptively drop them from the observing queue. This is a test to see the impact of implamenting a simple satellite mitigation strategy.
 
 ## twilight_filters
 

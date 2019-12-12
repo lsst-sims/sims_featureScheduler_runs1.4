@@ -1,0 +1,6 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 6 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 2 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 3 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 6 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
