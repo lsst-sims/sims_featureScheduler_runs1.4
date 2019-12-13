@@ -354,7 +354,9 @@ if __name__ == "__main__":
     conditions = observatory.return_conditions()
     # Mark position of the sun at the start of the survey. Usefull for rolling cadence.
     sun_ra_0 = conditions.sunRA  # radians
-    offset = create_season_offset(nside, sun_ra_0) + 365.25
+    offset = create_season_offset(nside, sun_ra_0)
+    max_season = 6
+
     sg = standard_goals()
     roll_maps = slice_wfd_area(mod_year, sg, scale_down_factor=scale_down_factor)
     footprints = roll_maps + [sg]
@@ -369,10 +371,10 @@ if __name__ == "__main__":
 
     greedy = gen_greedy_surveys(nside, nexp=nexp, footprints=footprints, season_modulo=mod_year,
                                 all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
-                                day_offset=offset, max_season=None)
+                                day_offset=offset, max_season=max_season)
     blobs = generate_blobs(nside, nexp=nexp, footprints=footprints, season_modulo=mod_year,
                            all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
-                           day_offset=offset, max_season=None)
+                           day_offset=offset, max_season=max_season)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
