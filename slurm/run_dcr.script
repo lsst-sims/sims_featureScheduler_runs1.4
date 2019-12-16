@@ -1,0 +1,5 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR/dcr.py --nham 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR/dcr.py --nham 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR/dcr.py --nham 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR/dcr.py --nham 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR/dcr.py --nham 5 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DCR
