@@ -97,8 +97,8 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
     return surveys
 
 
-def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'g', 'r', 'i', 'z', 'y'],
-                   filter2s=[None, 'r', 'i', 'z', None, None], pair_time=22.,
+def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r', 'i', 'z', 'y'],
+                   filter2s=['u', 'g', 'r', 'r', 'i', 'z', 'y', 'y'], pair_time=22.,
                    camera_rot_limits=[-80., 80.], n_obs_template=3,
                    season=300., season_start_hour=-4., season_end_hour=2.,
                    shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
