@@ -1,0 +1,26 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat/pair_strat.py --pair_strat 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/pair_strat
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 6 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 2 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 3 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling/rolling.py --splits 6 --scale_down_factor 0.1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/rolling
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 5 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters/twi_filters.py --nfilters 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_filters
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather/weather.py --cloud_limit 1.2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather/weather.py --cloud_limit 1.2 --no_downtime --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather/weather.py --cloud_limit 0.3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather/weather.py --cloud_limit 0.7 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/weather
+
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.65 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.70 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.75 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.80 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.85 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.90 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.95 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.99 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
