@@ -1,0 +1,8 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.65 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.70 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.75 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.80 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.85 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.90 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.95 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth/wfd_depth.py --wfd_scale 0.99 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_depth
