@@ -299,7 +299,7 @@ if __name__ == "__main__":
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
     parser.add_argument("--moon_illum_limit", type=float, default=15., help="illumination limit to remove u-band")
     parser.add_argument("--wfd_scale", type=float, default=0.95)
-    parser.add_argument("--no_ddf", dest='no_ddf', action='store_false')
+    parser.add_argument("--no_ddf", dest='no_ddf', action='store_true')
     parser.set_defaults(no_ddf=False)
 
     args = parser.parse_args()
@@ -309,7 +309,7 @@ if __name__ == "__main__":
     max_dither = args.maxDither
     illum_limit = args.moon_illum_limit
     wfd_scale_factor = args.wfd_scale
-    no_ddf = args.ddf
+    no_ddf = args.no_ddf
 
     nside = 32
     per_night = True  # Dither DDF per night
