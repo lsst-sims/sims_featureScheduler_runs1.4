@@ -299,6 +299,8 @@ if __name__ == "__main__":
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
     parser.add_argument("--moon_illum_limit", type=float, default=15., help="illumination limit to remove u-band")
     parser.add_argument("--wfd_scale", type=float, default=0.95)
+    parser.add_argument("--no_ddf", dest='no_ddf', action='store_false')
+    parser.set_defaults(no_ddf=False)
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
@@ -307,6 +309,7 @@ if __name__ == "__main__":
     max_dither = args.maxDither
     illum_limit = args.moon_illum_limit
     wfd_scale_factor = args.wfd_scale
+    no_ddf = args.ddf
 
     nside = 32
     per_night = True  # Dither DDF per night
@@ -327,6 +330,8 @@ if __name__ == "__main__":
     extra_info['file executed'] = os.path.realpath(__file__)
 
     fileroot = 'wfd_depth_scale%.2f_' % wfd_scale_factor
+    if no_ddf:
+        fileroot += 'noddf_'
     file_end = 'v1.4_'
 
     footprints = wfd_scale(scale=wfd_scale_factor)
@@ -338,7 +343,11 @@ if __name__ == "__main__":
 
     greedy = gen_greedy_surveys(nside, nexp=nexp, footprints=footprints)
     blobs = generate_blobs(nside, nexp=nexp, footprints=footprints)
-    surveys = [ddfs, blobs, greedy]
+    if no_ddf:
+        surveys = [blobs, greedy]
+    else:
+        surveys = [ddfs, blobs, greedy]
+
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
               nside=nside, illum_limit=illum_limit)
