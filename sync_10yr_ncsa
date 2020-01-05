@@ -1,0 +1,5 @@
+#!/bin/bash
+
+## copy just 10 year databases. exclude everything, then include all directories and all 10 year db files
+
+rsync -avzv --progress --delete --include="*/" --include="*10yrs.db" --exclude="*" * lsst-dev.ncsa.illinois.edu:"/datasets/public_html/sim-data/sims_featureScheduler_runs1.4/"
