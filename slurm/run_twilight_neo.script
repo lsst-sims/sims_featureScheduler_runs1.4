@@ -1,0 +1,4 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo/twilight_neo.py --night_mod 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo/twilight_neo.py --night_mod 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo/twilight_neo.py --night_mod 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo/twilight_neo.py --night_mod 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/twilight_neo
