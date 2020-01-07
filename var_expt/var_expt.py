@@ -69,9 +69,12 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
         sum_footprints += np.sum(footprints[key])
 
     surveys = []
-    detailer = detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits), max_rot=np.max(camera_rot_limits))
 
     for filtername in filters:
+        detailer_list = []
+        detailer_list.append(detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits), max_rot=np.max(camera_rot_limits)))
+        detailer_list.append(detailers.Vary_expt_detailer())
+
         bfs = []
         bfs.append((bf.M5_diff_basis_function(filtername=filtername, nside=nside), m5_weight))
         bfs.append((bf.Footprint_basis_function(filtername=filtername,
@@ -92,7 +95,7 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
         basis_functions = [val[0] for val in bfs]
         surveys.append(Greedy_survey(basis_functions, weights, exptime=exptime, filtername=filtername,
                                      nside=nside, ignore_obs=ignore_obs, nexp=nexp,
-                                     detailers=[detailer], **greed_survey_params))
+                                     detailers=detailer_list, **greed_survey_params))
 
     return surveys
 
@@ -100,7 +103,6 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
 def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r', 'i', 'z', 'y'],
                    filter2s=['u', 'g', 'r', 'r', 'i', 'z', 'y', 'y'], pair_time=22.,
                    camera_rot_limits=[-80., 80.], n_obs_template=3,
-                   nshort=2, short_time=1.,
                    season=300., season_start_hour=-4., season_end_hour=2.,
                    shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                    m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
@@ -126,10 +128,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
         The limits to impose when rotationally dithering the camera (degrees).
     n_obs_template : int (3)
         The number of observations to take every season in each filter
-    nshort : int (2)
-        The number of short exposure time observations to take every year.
-    short_time : float (1.)
-        The exposure time for short exposures (seconds).
     season : float (300)
         The length of season (i.e., how long before templates expire) (days)
     season_start_hour : float (-4.)
@@ -167,10 +165,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
     for key in footprints:
         sum_footprints += np.sum(footprints[key])
 
-    short_footprints = {}
-    for key in footprints:
-        short_footprints[key] = footprints[key] / footprints[key]
-
     surveys = []
 
     times_needed = [pair_time, pair_time*2]
@@ -179,8 +173,7 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
         detailer_list.append(detailers.Camera_rot_detailer(min_rot=np.min(camera_rot_limits),
                                                            max_rot=np.max(camera_rot_limits)))
         detailer_list.append(detailers.Close_alt_detailer())
-        
-
+        detailer_list.append(detailers.Vary_expt_detailer())
         # List to hold tuples of (basis_function_object, weight)
         bfs = []
 
@@ -249,15 +242,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
             survey_name = 'blob, %s%s' % (filtername, filtername2)
         if filtername2 is not None:
             detailer_list.append(detailers.Take_as_pairs_detailer(filtername=filtername2))
-
-        # add on a detailer to take short exposures if needed
-        detailer_list.append(detailers.Short_expt_detailer(filtername=filtername, nside=nside,
-                                                           nobs=nshort, exp_time=short_time,
-                                                           footprint=short_footprints[filtername]))
-        if (filtername2 is not None) & (filtername2 != filtername):
-            detailer_list.append(detailers.Short_expt_detailer(filtername=filtername2, nside=nside,
-                                                               nobs=nshort, exp_time=short_time,
-                                                               footprint=short_footprints[filtername2]))
         surveys.append(Blob_survey(basis_functions, weights, filtername1=filtername, filtername2=filtername2,
                                    exptime=exptime,
                                    ideal_pair_time=pair_time,
@@ -291,8 +275,6 @@ if __name__ == "__main__":
     parser.add_argument("--outDir", type=str, default="")
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
     parser.add_argument("--moon_illum_limit", type=float, default=15., help="illumination limit to remove u-band")
-    parser.add_argument("--nshort", type=int, default=2)
-    parser.add_argument("--short_time", type=float, default=1.)
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
@@ -300,8 +282,6 @@ if __name__ == "__main__":
     verbose = args.verbose
     max_dither = args.maxDither
     illum_limit = args.moon_illum_limit
-    nshort = args.nshort
-    short_time = args.short_time
 
     nside = 32
     per_night = True  # Dither DDF per night
@@ -321,7 +301,7 @@ if __name__ == "__main__":
 
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'short_exp_%ins_%iexpt_' % (nshort, short_time)
+    fileroot = 'var_expt_'
     file_end = 'v1.4_'
 
     # Set up the DDF surveys to dither
@@ -330,7 +310,7 @@ if __name__ == "__main__":
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
     greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp, nshort=nshort, short_time=short_time)
+    blobs = generate_blobs(nside, nexp=nexp)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,
