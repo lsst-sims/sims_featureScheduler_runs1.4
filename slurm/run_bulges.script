@@ -1,0 +1,6 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulges.py --strat_name bs --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulges.py --strat_name bulge_wfd --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulges.py --strat_name i_heavy --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulge_cadence.py --strat_name bs --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulge_cadence.py --strat_name bulge_wfd --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge/bulge_cadence.py --strat_name i_heavy --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/bulge
