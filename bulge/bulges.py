@@ -238,7 +238,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
                           'smoothing_kernel': None, 'nside': nside, 'seed': 42, 'dither': True,
                           'twilight_scale': True}
 
-    footprints = standard_goals(nside=nside)
     sum_footprints = 0
     for key in footprints:
         sum_footprints += np.sum(footprints[key])
