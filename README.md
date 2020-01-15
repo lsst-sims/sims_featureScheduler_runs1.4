@@ -3,8 +3,9 @@ The continuing excitement of more simulated LSST surveys
 
 Updated in this release:
 
-* A more realistic database of the expected seeing conditions. This mean the median atmospheric seeing is increased from ~0.6" to 0.7". Seasonal seeing variation should be more realistic as well
+* A more realistic database of the expected seeing conditions. This means the median atmospheric seeing is increased from ~0.6" to 0.7". Seasonal seeing variation should be more realistic as well
 * We restrict the camera rotation to prevent tracking beyond rotator limits.
+* Refactored the configuration scripts to include more documentation and better readability
 
 
 ## AGN_DDF
@@ -30,6 +31,8 @@ The baseline survey that all the other experiments use as a template starting po
 
 Unlike previous baseline simulations, we now take more observations in pairs (previously u and y filter observations were unpaired).
 
+Note the baseline survey with 2 snaps does not quite read the SRD requirements for number of visits in the WFD area. 
+
 ## euclid_DDF
 
 Scheduling deep drilling fields so they include the planned Euclid fields
@@ -45,6 +48,8 @@ We experiment with different strategies of how we take observations in pairs.
 ## rolling
 
 Testing rolling cadences where we divide the WFD area into 2, 3, or 6 bands. These all perform regular full-sky coverage at the start and end of the survey.
+
+The rolling cadences has a larger mean slewtime, even though the number of fitler changes seems about the same. The basis function weights probably need more tuning for rolling cadence strategy, or the rolling footprint basis function might not be quite right since the slewtime problem appears in the first year.
 
 ## short_exp
 
