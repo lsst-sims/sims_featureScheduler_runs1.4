@@ -248,7 +248,6 @@ def generate_blobs(nside, nexp=1, exptime=30., filter1s=['u', 'u', 'u', 'g', 'r'
 
     bulge_map = bulge_pix(nside=nside)
 
-    footprints = standard_goals(nside=nside)
     sum_footprints = 0
     for key in footprints:
         sum_footprints += np.sum(footprints[key])
