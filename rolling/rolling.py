@@ -78,6 +78,7 @@ def gen_greedy_surveys(nside=32, nexp=1, exptime=30., filters=['r', 'i', 'z', 'y
                                                         all_footprints_sum=all_footprints_sum, all_rolling_sum=all_rolling_sum,
                                                         day_offset=day_offset, season_modulo=season_modulo,
                                                         max_season=max_season), footprint_weight))
+        bfs.append((bf.Slewtime_basis_function(filtername=filtername, nside=nside), slewtime_weight))
         bfs.append((bf.Strict_filter_basis_function(filtername=filtername), stayfilter_weight))
         # Masks, give these 0 weight
         bfs.append((bf.Zenith_shadow_mask_basis_function(nside=nside, shadow_minutes=shadow_minutes,
