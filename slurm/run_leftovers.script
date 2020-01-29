@@ -1,0 +1,4 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/no_pairs/nopairs.py --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/no_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/shorter_ddf/short_ddf.py --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/shorter_ddf
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name big_wfd --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u60/u60.py --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u60
