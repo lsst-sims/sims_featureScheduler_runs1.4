@@ -8,6 +8,41 @@ from lsst.sims.featureScheduler.utils import standard_goals
 
 # OK, what are the footprints we'd like to try?
 
+
+def big_wfd(nside=32):
+    """
+    A quick function to generate the "standard" goal maps. This is the traditional WFD/mini survey footprint.
+    """
+    wfd_dec_max = 20
+
+    result = {}
+    result['u'] = generate_goal_map(nside=nside, NES_fraction=0.,
+                                    WFD_fraction=0.31, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    result['g'] = generate_goal_map(nside=nside, NES_fraction=0.2,
+                                    WFD_fraction=0.44, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    result['r'] = generate_goal_map(nside=nside, NES_fraction=0.46,
+                                    WFD_fraction=1.0, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    result['i'] = generate_goal_map(nside=nside, NES_fraction=0.46,
+                                    WFD_fraction=1.0, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    result['z'] = generate_goal_map(nside=nside, NES_fraction=0.4,
+                                    WFD_fraction=0.9, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    result['y'] = generate_goal_map(nside=nside, NES_fraction=0.,
+                                    WFD_fraction=0.9, SCP_fraction=0.15,
+                                    GP_fraction=0.15,
+                                    wfd_dec_min=-62.5, wfd_dec_max=wfd_dec_max)
+    return result
+
+
 def bluer_footprint(nside=32):
     """Try a bluer filter dist. May want to turn this into a larger parameter search.
     """

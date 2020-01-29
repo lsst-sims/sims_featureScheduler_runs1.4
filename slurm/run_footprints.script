@@ -9,3 +9,4 @@ python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprint
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name newA --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name newB --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
 python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name stuck_rolling --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints/footprints.py --footprint_name big_wfd --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/footprints
