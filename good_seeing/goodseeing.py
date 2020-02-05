@@ -283,6 +283,7 @@ if __name__ == "__main__":
     parser.add_argument("--outDir", type=str, default="")
     parser.add_argument("--maxDither", type=float, default=0.7, help="Dither size for DDFs (deg)")
     parser.add_argument("--moon_illum_limit", type=float, default=15., help="illumination limit to remove u-band")
+    parser.add_argument("--good_seeing_filts", type=str, default='i')
 
     args = parser.parse_args()
     survey_length = args.survey_length  # Days
@@ -290,6 +291,7 @@ if __name__ == "__main__":
     verbose = args.verbose
     max_dither = args.maxDither
     illum_limit = args.moon_illum_limit
+    good_seeing_filts = args.good_seeing_filts
 
     nside = 32
     per_night = True  # Dither DDF per night
@@ -309,7 +311,7 @@ if __name__ == "__main__":
 
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'goodseeing_'
+    fileroot = 'goodseeing_%s_' % good_seeing_filts
     file_end = 'v1.4_'
 
     # Set up the DDF surveys to dither
@@ -318,7 +320,7 @@ if __name__ == "__main__":
     ddfs = generate_dd_surveys(nside=nside, nexp=nexp, detailers=details)
 
     greedy = gen_greedy_surveys(nside, nexp=nexp)
-    blobs = generate_blobs(nside, nexp=nexp)
+    blobs = generate_blobs(nside, nexp=nexp, good_seeing_filts=good_seeing_filts)
     surveys = [ddfs, blobs, greedy]
     run_sched(surveys, survey_length=survey_length, verbose=verbose,
               fileroot=os.path.join(outDir, fileroot+file_end), extra_info=extra_info,

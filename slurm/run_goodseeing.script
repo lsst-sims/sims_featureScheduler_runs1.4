@@ -1,0 +1,5 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing/goodseeing.py --good_seeing_filts i --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing/goodseeing.py --good_seeing_filts gi --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing/goodseeing.py --good_seeing_filts gri --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing/goodseeing.py --good_seeing_filts griz --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing/goodseeing.py --good_seeing_filts gz --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/good_seeing
