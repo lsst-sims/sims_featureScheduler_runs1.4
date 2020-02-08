@@ -1,0 +1,7 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 60 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 45 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 30 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 20 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 15 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 10 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load/filter_load.py --moon_illum_limit 5 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/filter_load
