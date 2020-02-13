@@ -48,8 +48,8 @@
 source /gscratch/astro/yoachim/lsst/loadLSST.bash
 setup sims_maps
 setup sims_featureScheduler -t $USER -t sims_w_2020_02
-setup sims_maf -t $USER -t sims
-setup sims_maf_contrib -t $USER -t sims
+setup sims_maf -t $USER -t sims_w_2020_02
+setup sims_maf_contrib -t $USER -t sims_w_2020_02
 
 
 cd /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/maf_all
