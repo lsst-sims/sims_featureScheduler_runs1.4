@@ -1,7 +1,7 @@
 import glob
 
 # To generate sym links:
-# find . -name *10yrs.db | xargs -I'{}' ln -s '{}' maf_all/.
+# find ../ -name *10yrs.db | xargs -I'{}' ln -s '{}' .
 
 if __name__ == "__main__":
     db_files = glob.glob('*10yrs.db')
