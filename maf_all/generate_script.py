@@ -8,8 +8,8 @@ if __name__ == "__main__":
     outfile = open("run_all.sh", 'w')
 
     for filename in db_files:
-        outfile.write('python ../glace_dir --db %f' % filename)
-        outfile.write('python ../scimaf_dir.py --db %f' % filename)
+        outfile.write('python ../glace_dir --db %s' % filename)
+        outfile.write('python ../scimaf_dir.py --db %s' % filename)
 
     outfile.close()
 
