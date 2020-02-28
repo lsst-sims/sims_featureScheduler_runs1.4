@@ -1,0 +1,2 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DDF_experiment/dark_ddf.py --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DDF_experiment
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DDF_experiment/flex_ddf.py --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/DDF_experiment
