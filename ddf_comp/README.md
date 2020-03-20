@@ -63,11 +63,17 @@ The number of observations taken of each field as a function of simulation
 The final coadded depths for each DDF in each simulation. As expected, since the agnddf takes many fewer exposures, it has shallower depths.  There is a significant hit to the final u filter depth if they are not forced to be taken in dark time (e.g., flexddf and longseasonddf).
 
 ![](depths_DD:290.png)
+
 ![](depths_DD:ECDFS.png)
+
 ![](depths_DD:EDFSb.png)
+
 ![](depths_DD:XMM-LSS.png)
+
 ![](depths_DD:COSMOS.png)
+
 ![](depths_DD:EDFSa.png)
+
 ![](depths_DD:ELAISS1.png)
 
 ## Impact on Main Survey
@@ -77,6 +83,7 @@ We look at the median depths reached in the primary survey.  As expected, the si
 The g and r filters go slightly deeper, and the z is more shallow when the u-filter is left mounted longer (u-band observations are often paired with g or r, so somewhat expected).
 
 ![](survey_depth.png)
+
 ![](survey_depth_rel.png)
 
 
@@ -85,9 +92,11 @@ The g and r filters go slightly deeper, and the z is more shallow when the u-fil
 We distribute a sample of SNe inside each DDF and see how well they are detected pre-peak, and what fraction can be considered "well-observed".
 
 ![](sne_pre_peak.png)
+
 The agnddf and descddf simulations do slightly better at detecting SNe pre-peak. The DD:290 field is not included in all the simulations (and I think is not in the WFD area), so it can fall to low values. The Euclid fields EDFSa and EDFSb are in the WFD area, so even in simulations where they are not DDFs, the SNe detection rate is rather high.
 
 We also include a metric of what fraction of our simulated population is "well-observed". This shows relatively little variation, so is probably a sign that the metrics is poorly defined.
+
 ![](sne_well.png)
 
 
