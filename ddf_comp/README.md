@@ -62,19 +62,19 @@ The number of observations taken of each field as a function of simulation
 
 The final coadded depths for each DDF in each simulation. As expected, since the agnddf takes many fewer exposures, it has shallower depths.  There is a significant hit to the final u filter depth if they are not forced to be taken in dark time (e.g., flexddf and longseasonddf).
 
-![](depths_DD:290.png)
+![](depths_DD.290.png)
 
-![](depths_DD:ECDFS.png)
+![](depths_DD.ECDFS.png)
 
-![](depths_DD:EDFSb.png)
+![](depths_DD.EDFSb.png)
 
-![](depths_DD:XMM-LSS.png)
+![](depths_DD.XMM-LSS.png)
 
-![](depths_DD:COSMOS.png)
+![](depths_DD.COSMOS.png)
 
-![](depths_DD:EDFSa.png)
+![](depths_DD.EDFSa.png)
 
-![](depths_DD:ELAISS1.png)
+![](depths_DD.ELAISS1.png)
 
 ## Impact on Main Survey
 
