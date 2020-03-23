@@ -1,0 +1,12 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 15 --u_scaleup 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 30 --u_scaleup 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 40 --u_scaleup 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 60 --u_scaleup 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 15 --u_scaleup 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 30 --u_scaleup 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 40 --u_scaleup 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 60 --u_scaleup 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 15 --u_scaleup 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 30 --u_scaleup 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 40 --u_scaleup 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs/upairs.py --moon_illum_limit 60 --u_scaleup 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/u_pairs

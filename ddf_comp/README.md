@@ -6,7 +6,8 @@ All of the simulations should include the four fields that have been announced b
 
 For all of these, DDFs are dithered nightly up to 0.7 degrees. The final dithering strategy is still to be decided and will depend on the on-sky performance on the telescope. We plan to customize the dithering strategy to avoid bright stars and provide more continuous coverage of the Euclid area.
 
-Here is a brief summary of the simulations:
+Full simulation databases can be found at https://lsst-web.ncsa.illinois.edu/sim-data/sims_featureScheduler_runs1.4/
+
 
 ## baseline
 
