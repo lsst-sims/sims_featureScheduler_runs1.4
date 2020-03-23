@@ -10,11 +10,13 @@ Here is a brief summary of the simulations:
 
 ## baseline
 
-DD:290 is the 5th field, DDF's are about 8% of the total visits, the u-filter is only mounted around new moon.
+DD:290 is the 5th field, DDF's are about 8% of the total visits, the u-filter is only mounted around new moon (15% lunar illumination).
 
 u-band deep field sequence is separate from other filters.
 
 DDF sequence only executes if all the requested filters for the sequence are mounted.
+
+The baseline DDF sequence is rx20, gx10, ix20, zx26, and yx20. The u-band executes 8 visits.
 
 ## euclidddf
 
@@ -26,9 +28,13 @@ u-band deep field sequence is separate from other filters
 
 Based on the AGN cadence white paper. Fewer overall observations taken at a higher cadence.
 
+The DDF sequences are gx1, rx1, ix3, zx5, yx4. The u-band is like the baseline with ux8.
+
 ## flexddf
 
-Now we have u-band observations taken in the same sequence as other filters. DDF sequences execute with whichever filters are available. DDFs make up 5% of all observations
+Now we have u-band observations taken in the same sequence as other filters. DDF sequences execute with whichever filters are available. DDFs make up 5% of all observations.
+
+The sequences are now ux8, rx20, gx10, ix20, zx26, and yx20 with whatever 5 filters happen to be available.
 
 ## flexddf_moreu
 
@@ -40,13 +46,15 @@ Similar to flexddf, but the hour angle limits on the DDFs are expanded to facili
 
 ## darkddf
 
-Similar to flexddf, but now required to execute DDF sequences only in dark time. 
+Similar to flexddf, but now required to execute DDF sequences only in dark time (moon down, no twilight). 
 
-Unfortunatly, the Euclid DDF was configured differently in this one, so they are listed as two fields DD:EDFS1 and DD:EDFS2
+Unfortunately, the Euclid DDF was configured differently in this simulation, so they are listed as two fields DD:EDFS1 and DD:EDFS2
 
 ## descddf
 
 Based on the DESC cadence white paper. Uses DD:290 as the 5th field.  
+
+The DESC sequences alternate between gx2, rx4, ix8 and zx25, yx4.  The u-band sequences are the same as the baseline.
 
 
 # Results
