@@ -324,7 +324,7 @@ if __name__ == "__main__":
         footprints = standard_goals()
         nes_pix = np.where(footprints['r'] == 0.46)
         for key in footprints:
-            footprints[key][nes_pix] = footprints[key][gp_pix]/2.
+            footprints[key][nes_pix] = footprints[key][nes_pix]/2.
 
     # Set up the DDF surveys to dither
     dither_detailer = detailers.Dither_detailer(per_night=per_night, max_dither=max_dither)
