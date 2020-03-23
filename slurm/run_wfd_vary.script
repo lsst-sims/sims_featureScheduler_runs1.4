@@ -1,0 +1,4 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary/wfd_vary.py --fp 1 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary/wfd_vary.py --fp 2 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary/wfd_vary.py --fp 3 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary/wfd_vary.py --fp 4 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/wfd_vary
