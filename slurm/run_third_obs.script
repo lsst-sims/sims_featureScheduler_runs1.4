@@ -1,0 +1,6 @@
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 15 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 30 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 45 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 60 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 90 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
+python /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs/third_obs.py --pair_time 120 --outDir /gscratch/astro/yoachim/git_repos/sims_featureScheduler_runs1.4/third_obs
