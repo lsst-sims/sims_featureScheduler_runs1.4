@@ -3,7 +3,7 @@ import matplotlib.pylab as plt
 import healpy as hp
 from lsst.sims.featureScheduler.modelObservatory import Model_observatory
 from lsst.sims.featureScheduler.schedulers import Core_scheduler, simple_filter_sched
-from lsst.sims.featureScheduler.utils import standard_goals, create_season_offset
+from lsst.sims.featureScheduler.utils import standard_goals, create_season_offset, generate_goal_map
 import lsst.sims.featureScheduler.basis_functions as bf
 from lsst.sims.featureScheduler.surveys import (generate_dd_surveys, Greedy_survey,
                                                 Blob_survey)
@@ -304,25 +304,31 @@ if __name__ == "__main__":
     fileroot = 'wfd_vary_fp%i' % fp
     file_end = 'v1.4_'
 
+    gp_only = generate_goal_map(NES_fraction=.0, WFD_fraction=0.,
+                                SCP_fraction=0.0, GP_fraction=0.2)
+
+    nes_scp = generate_goal_map(NES_fraction=.1, WFD_fraction=0.,
+                                SCP_fraction=0.1, GP_fraction=0.0)
+
+    gp_pix = np.where(gp_only > 0)[0]
+    nes_pix = np.where(nes_scp > 0)[0]
+
     # Baseline footprint
     if fp == 1:
         footprints = standard_goals()
     # Let's wipe out the GP
     if fp == 2:
         footprints = standard_goals()
-        gp_pix = np.where(footprints['r'] == 0.15)
         for key in footprints:
             footprints[key][gp_pix] = 0
     # Double the GP
     if fp == 3:
         footprints = standard_goals()
-        gp_pix = np.where(footprints['r'] == 0.15)
         for key in footprints:
             footprints[key][gp_pix] *= 2
     # Cut the NES and SCP in half
     if fp == 4:
         footprints = standard_goals()
-        nes_pix = np.where(footprints['r'] == 0.46)
         for key in footprints:
             footprints[key][nes_pix] = footprints[key][nes_pix]/2.
 
