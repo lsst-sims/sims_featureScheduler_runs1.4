@@ -461,7 +461,7 @@ if __name__ == "__main__":
 
     extra_info['file executed'] = os.path.realpath(__file__)
 
-    fileroot = 'third_obs_pt%i' % pair_time
+    fileroot = 'third_obs_'
     file_end = 'v1.4_'
 
     # Set up the DDF surveys to dither

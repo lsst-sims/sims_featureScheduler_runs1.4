@@ -20,6 +20,10 @@ Scheduling deep drilling fields so they are optimized for AGN studies.
 
 This includes taking u and g filter observations at high airmass so DCR can be measured.
 
+## DDF_eperiment
+
+We try some different DDF strategies, making longer DDF observing seasons, execuiting only in dark time, and leaving the u filter mounted for longer.
+
 ## DESC_DDF
 
 Scheduling deep drilling fields so they are optimized for the Dark Energy Science Collaboration.
@@ -64,6 +68,10 @@ In addition to the usual baseline, we cover the survey footprint with shorter ex
 
 We set the camera rotator to +/- 45 degrees so diffraction spikes lie along rows and columns of the CCDs
 
+## third_obs
+
+We take some time at the end of the night to attempt to observe a third observations of regions that have already been observed twice.
+
 ## twilight_filters
 
 We test limiting the number of filters available in/near twilight
@@ -71,6 +79,14 @@ We test limiting the number of filters available in/near twilight
 ## twilight_neo
 
 Executing a NEO search strategy in twilight time.
+
+## u60
+
+Testing taking 60s u-filter exposures (to lift u observations above readnoise dominated regime)
+
+## u_pairs
+
+Testing different u-pairing strategies and varying how long the u filter is mounted.
 
 ## var_expt
 
@@ -83,4 +99,8 @@ Mostly illustrative tests where we look at performance with different levels of 
 ## wfd_depth
 
 Mostly illustrative to see how performance varies as we change the requested WFD depth.
+
+## wfd_vary
+
+More illustrative runs to show that adding observations to the galactic plane does not change the WFD depth much.
 
