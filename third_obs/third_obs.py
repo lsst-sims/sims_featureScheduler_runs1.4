@@ -254,7 +254,7 @@ def generate_evening_blobs(nside, nexp=1, exptime=30., filter1s=['g', 'r', 'i', 
                            shadow_minutes=60., max_alt=76., moon_distance=30., ignore_obs='DD',
                            m5_weight=6., footprint_weight=0.6, slewtime_weight=3.,
                            stayfilter_weight=3., template_weight=12.,
-                           observe_paired_weight=3., time_before_twi=30., footprints=None):
+                           observe_paired_weight=20., time_before_twi=30., footprints=None):
     """
     Generate surveys that take observations in blobs.
 
